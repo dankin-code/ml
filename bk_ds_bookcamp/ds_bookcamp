@@ -1,0 +1,75 @@
+sample_space = {'Heads','Tails'}
+probaility_heads = 1 / len(sample_space)
+print()
+
+# an event is the subset of those elements within the sample
+# that satisfy some event condition.
+# an event condition is a simple boolean function whose input 
+# is a single Boolean function whose input is a single element in 
+# the sample.
+
+# defining event conditions
+def is_heads_or_tails(outcome): return outcome in { 'Heads', 'Tails'}
+def is_neither(outcome): return not is_heads_or_tails(outcome)
+
+# defining additional event conditions
+def is_heads(outcome): return outcome == 'Heads'
+def is_tails(outcome): return outcome == 'Tails'
+
+# defining an event-detection function
+def get_matching_event (event_condition, sample_space):
+    return set([outcome for outcome in sample_space if event_condition(outcome)])
+
+event_conditions = [is_heads_or_tails, is_heads, is_tails, is_neither]
+
+for event_condition in event_conditions:
+    print(f"Event Condition: {event_condition.__name__}")
+    event = get_matching_event(event_condition, sample_space)
+    print(f'Event: {event}\n')
+
+'''
+Event Condition: is_heads_or_tails
+Event: {'Tails', 'Heads'}
+
+Event Condition: is_heads
+Event: {'Heads'}
+
+Event Condition: is_tails
+Event: {'Tails'}
+
+Event Condition: is_neither
+Event: set()
+'''
+
+# Computing Event probabilities
+def compute_probability(event_condition, generic_sample_space):
+    event = get_matching_event(event_condition, generic_sample_space)
+    return len(event) / len(generic_sample_space)
+
+for event_condition in event_conditions:
+    prob = compute_probability(event_condition, sample_space)
+    name = event_condition.__name__
+    print(f"Probability of event arising from '{name}' is {prob}")
+
+
+# 1.1.1 Analyzing a Biased Coin
+
+# representing a weighted sample space
+weighted_sample_space = {'Heads':4, 'Tails':1}
+
+# check the weighted sample space size
+sample_space_size = sum(weighted_sample_space.value())
+assert sample_space_size == 5
+
+# checking the weighted event size
+event = get_matching_event(is_heads_or_tails, weighted_sample_space)
+event_size = sum(weighted_sample_space[outcome] for outcome in event)
+assert event_size == 5
+
+# defining a generalized event probability function
+def compute_event_probability(event_condition, generic_sample_space):
+    event = get_matching_event(event_condition, generic_sample_space)
+    if type(generic_sample_space) == type(set()): # checks whether generic_event_space is set
+        return len(event) / len(generic_sample_space)
+    
+    event
