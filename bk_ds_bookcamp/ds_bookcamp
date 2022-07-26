@@ -58,7 +58,7 @@ for event_condition in event_conditions:
 weighted_sample_space = {'Heads':4, 'Tails':1}
 
 # check the weighted sample space size
-sample_space_size = sum(weighted_sample_space.value())
+sample_space_size = sum(weighted_sample_space.values())
 assert sample_space_size == 5
 
 # checking the weighted event size
@@ -73,3 +73,43 @@ def compute_event_probability(event_condition, generic_sample_space):
         return len(event) / len(generic_sample_space)
     
     event
+
+# 1.1.1 Analyzing a biased coin
+
+# representing a weighted sample space
+weighted_sample_space = {'Heads':4, 'Tails':1}
+
+# check the weighted sample space size
+sample_space_size = sum(weighted_sample_space.values())
+assert sample_space_size == 5
+
+# checking the weighted event size
+event = get_matching_event(is_heads_or_tails, weighted_sample_space)
+# the above function iterates over each outcome in the inputted sample space
+# thus it works as expected as Pything iterates over dictionary keys, not ke-value pairs
+# as in many other popular programming languages
+event_size = sum(weighted_sample_space[outcome] for outcome in event)
+assert event_size == 5
+
+# our generalized definition of sample space size and event size
+# permit us to create compute_event_probability function. This function 
+# takes as input a generic_sample_space variable that can be either 
+# a weighted dictionary or an unwheighted set
+
+def compute_event_probability(event_condition, generic_sample_space):
+    event = get_matching_event(event_condition, generic_sample_space)
+    if type(generic_sample_space) == type(set()): # checks whether generic_event_space is a set
+        return len(event) / len(generic_sample_space)
+    
+    event_size = sum(generic_sample_space[outcome] for outcome in event)
+    return event_size / sum(generic_sample_space.values())
+
+for event_condition in event_conditions:
+    prob = compute_event_probability(event_condition, weighted_sample_space)
+    name = event_condition.__name__
+    print(f"Probabiliy of event arising from '{name}' is {prob}")
+
+
+
+# continue from page 36
+# 1.2
