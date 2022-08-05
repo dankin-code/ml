@@ -101,3 +101,27 @@ plt.ylabel('Probability')
 plt.legend()
 plt.show()
 
+# converting head counts into frequencies
+x_10_frequencies = [head_count /10 for head_count in x_10_flips]
+x_20_frequencies = [head_count /20 for head_count in x_20_flips]
+
+plt.plot(x_10_frequencies, prob_x_10_flips, label='A: 10 coin-flips')
+plt.plot(x_20_frequencies, prob_x_20_flips, color='k', linestyle=':', label='B: 20 coin-flips')
+
+plt.xlabel('Head-Frequency')
+plt.ylabel('Probability')
+plt.legend()
+plt.show()
+
+# computing relative likelihoods of frequencies
+relative_likelihood_10 = [10 * prob for prob in prob_x_10_flips]
+relative_likelihood_20 = [20 * prob for prob in prob_x_20_flips]
+plt.plot(x_10_frequencies, relative_likelihood_10, label='A: 10 coin-flips')
+plt.plot(x_20_frequencies, relative_likelihood_20, color='k', linestyle=':', label='B: 20 coin-flips')
+plt.fill_between(x_10_frequencies, relative_likelihood_10, where=where_10)
+plt.fill_between(x_20_frequencies, relative_likelihood_20, where=where_20)
+
+plt.xlabel('Head-Frequency')
+plt.ylabel('Relative Likelihood')
+plt.legend()
+plt.show()
