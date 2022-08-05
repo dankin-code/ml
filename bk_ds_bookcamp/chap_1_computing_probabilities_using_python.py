@@ -202,6 +202,43 @@ def is_in_interval(number, minimum, maximum):
     return minimum <= number <= maximum
 
 # lambda function takes input x ad returns True if
-# x falls in an interval between
+# x falls in an interval between 10 and 21
+# this one line lambda function servers as our event condition
 prob = compute_event_probability(lambda x: is_in_interval(x, 10, 21), weighted_sample_space)
 print(f"Probability of interval is {prob}")
+
+# Probability of interval is 0.5446244855967078
+# the six die rolls will fall between that interval range more than
+# 54% of the time. Thus if a roll sum of 13 or 20 comes up, we should not be surprised
+
+# Interval analysis is critical to solving a whole class of very important problems in 
+# probability and statistics. One such problem involves the evaluation of extremes: 
+# the problem boils down to whether observed data is too extreme to be believable
+
+# computing the sample space of 10 coin flips
+def generate_coin_sample_space(num_flips=10):
+    weighted_sample_space = defaultdict(int)
+    for coin_flips in product(['Heads','Tails'], repeat=num_flips):
+        heads_count = len([outcome for outcome in coin_flips if outcome =='Heads'])
+        weighted_sample_space[heads_count] +=1
+    return weighted_sample_space
+
+weighted_sample_space = generate_coin_sample_space()
+assert weighted_sample_space[10] == 1
+assert weighted_sample_space[9] == 10
+
+# compute an extreme head-count probability
+prob = compute_event_probability(lambda x: is_in_interval(x, 8, 10), weighted_sample_space)
+print(f"Probability of observing more than 7 heads is {prob}")
+# Probability of observing more than 7 heads is 0.0546875
+
+# computing an extreme interval probability
+prob = compute_event_probability(lambda x: not is_in_interval(x, 3, 7), weighted_sample_space)
+print(f"Probability of observing more than 7 heads or 7 tails is {prob}")
+# Probability of observing more than 7 heads or 7 tails is 0.109375
+
+# analyzing extreme head count for 20 fair coin flips
+weighted_sample_space_20_flips = generate_coin_sample_space(num_flips=20)
+prob = compute_event_probability(lambda x: not is_in_interval(x, 5, 15), weighted_sample_space_20_flips)
+print(f"Probability of observing more than 15 heads or 15 tails is {prob}")
+# Probability of observing more than 15 heads or 15 tails is 0.01181793212890625
