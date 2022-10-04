@@ -33,3 +33,4 @@ datasets/
 env/
 *.pyc
 build
+.Rproj.user
