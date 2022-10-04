@@ -34,3 +34,4 @@ env/
 *.pyc
 build
 .Rproj.user
+.Rhistory
