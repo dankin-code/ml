@@ -1,0 +1,3 @@
+
+12/17/2022
+working on chapter 3 working on random simulations with numpy
